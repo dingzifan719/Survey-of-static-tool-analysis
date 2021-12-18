@@ -144,7 +144,7 @@ def sourcetrail_format(entity_path: str, dependency_path:str, projectname:str, o
 
 def depends_format(entity_path: str, dependency_path:str, projectname:str, output:str):
     with open(entity_path, 'r', encoding='utf-8') as txtfile:
-        nodes = txtfile.read()  # 可以是随便对文件的操作
+        nodes = txtfile.read()
     node_list = nodes.split("\n")
     node_count = list()
     for node in node_list:
@@ -174,17 +174,3 @@ if __name__ == "__main__":
         sourcetrail_format(entityInput, dependencyInput, projectname, output)
     if tool == "depends":
         depends_format(entityInput, dependencyInput, projectname, output)
-
-
-'''
-eg:
-
-python Format.py -t sourcetrail -e .\input\node.csv -d .\input\edge.csv -p halo -o .\halo
-
-python Format.py -t enre -e input\enre_halo-1.4.10-out.json -d test -p halo -o .\halo
-
-python Format.py -t depends -e input\halo.txt -d input\depends_halo.json -p halo -o .\halo
-
-python Format.py -t understand -e understand_halo_entity.json -d input\understand_halo_dependency.json -p halo -o .\halo
-
-'''
