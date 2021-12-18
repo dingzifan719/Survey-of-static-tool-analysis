@@ -332,6 +332,11 @@ class Sourcetrail_Depends_EntityComparer:
             return CompareResult.NotEQ
 
 
+class Dependency_EntityComparer:
+        def compare(self, lhs: Dependency, rhs: Dependency):
+            lhs.dependencySrcID
+
+
 def main():
     L_INPUT = parse_param('lhs')
     R_INPUT = parse_param('rhs')
