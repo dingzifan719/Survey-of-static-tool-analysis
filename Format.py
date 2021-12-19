@@ -5,7 +5,7 @@ import json
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--tool", type=str, required=True, choices=['enre', 'understand', 'sourcetrail', 'depends'],
+    parser.add_argument("-t", "--tool", type=str, required=True, choices=['enre', 'understand', 'sourcetrail', 'depends', 'code2graph'],
                         help="choose the tool you used, eg: understand, enre, depends...")
     parser.add_argument("-e", "--entityInput", type=str, required=True, help="please input the input entity file path")
     parser.add_argument("-d", "--dependencyInput", type=str, required=True, help="please input the input dependency file path")
@@ -164,6 +164,39 @@ def depends_format(entity_path: str, dependency_path:str, projectname:str, outpu
     output_file(edge_count, output + "/depends_" + projectname + "_dependency.json", projectname, "dependency")
 
 
+def code2graph_format(entity_path: str, dependency_path:str, projectname:str, output:str):
+    f = open(entity_path, encoding="utf-8")
+    file_text = f.read()
+    f.close()
+    lines = file_text.split("\n")
+    entityList = list()
+    dependencyList = list()
+    for line in lines:
+        if len(line) > 11:
+            if (line.__contains__("->")) & ("id=" not in line):
+                srcID = int(line[2:line.find("-") - 1])
+                destID = int(line[line.find(">") + 2:line.find("[") - 1])
+                indexes = line.split("\"")
+                type = None
+                for i in range(len(indexes)):
+                    if indexes[i].__contains__("type="):
+                        type = indexes[i + 1]
+                dependencyList.append(Dependency(type, srcID, destID))
+            else:
+                indexes = line.split("\"")
+                entityName = None
+                for i in range(len(indexes)):
+                    if indexes[i].endswith("id="):
+                        entityId = int(indexes[i + 1])
+                    if indexes[i].__eq__(" uri="):
+                        entityName = indexes[i + 1]
+                    if indexes[i].__eq__(" type="):
+                        entityType = indexes[i + 1]
+                entityList.append(Entity(entityId, entityName, entityType))
+    output_file(entityList, output + "/code2graph_" + projectname + "_entity.json", projectname, "entity")
+    output_file(dependencyList, output + "/code2graph_" + projectname + "_dependency.json", projectname, "dependency")
+
+
 if __name__ == "__main__":
     tool, entityInput, dependencyInput, projectname, output = parse_args()
     if tool == "enre":
@@ -174,3 +207,5 @@ if __name__ == "__main__":
         sourcetrail_format(entityInput, dependencyInput, projectname, output)
     if tool == "depends":
         depends_format(entityInput, dependencyInput, projectname, output)
+    if tool == "code2graph":
+        code2graph_format(entityInput, dependencyInput, projectname, output)
