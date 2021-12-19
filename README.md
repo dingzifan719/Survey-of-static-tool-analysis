@@ -7,7 +7,6 @@
 ```
 usage: Format.py [-h] -t {enre,understand,sourcetrail,depends} -e ENTITYINPUT
                  -d DEPENDENCYINPUT -p PROJECTNAME -o OUTPUT
-Format.py: error: the following arguments are required: -t/--tool, -e/--entityInput, -d/--dependencyInput, -p/--projectname, -o/--output
 ```
 ```
 eg:
@@ -21,7 +20,6 @@ usage: dependency_diff.py [-h] -lt
                           {enre,understand,sourcetrail,depends,code2graph} -e
                           ENTITY -ld LEFT_DEPENDENCY -rd RIGHT_DEPENDENCY -p
                           PROJECTNAME -o OUTPUT
-dependency_diff.py: error: the following arguments are required: -lt/--left_tool, -rt/--right_tool, -e/--entity, -ld/--left_dependency, -rd/--right_dependency, -p/--projectname, -o/--output
 ```
 
 ```
